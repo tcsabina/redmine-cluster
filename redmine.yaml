@@ -18,6 +18,15 @@ spec:
         image: redmine:5.0.6-alpine
         ports:
         - containerPort: 3000
+        env:
+        - name: REDMINE_DB_POSTGRES
+          value: postgres-service
+        - name: REDMINE_DB_DATABASE
+          value: redmine
+        - name: REDMINE_DB_USERNAME
+          value: pguser
+        - name: REDMINE_DB_PASSWORD
+          value: pgpass
         volumeMounts:
         - name: redmine-files
           mountPath: /usr/src/redmine/files
@@ -45,55 +54,3 @@ spec:
     protocol: TCP
   selector:
     app: redmine
----
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: postgres
-spec:
-  serviceName: postgres-db
-  replicas: 1
-  selector:
-    matchLabels:
-      app: postgres
-  template:
-    metadata:
-      labels:
-        app: postgres
-    spec:
-      containers:
-      - name: postgres
-        image: postgres:16.0-alpine
-        ports:
-        - containerPort: 5432
-        env:
-        - name: POSTGRES_PASSWORD
-          value: pgpass
-        - name: POSTGRES_DB
-          value: redmine
-        volumeMounts:
-        - name: postgres-data
-          mountPath: /var/lib/postgresql/data
-  volumeClaimTemplates:
-    - metadata:
-        name: postgres-data
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        resources:
-          requests: 
-            storage: 100Mi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: postgres-service
-  labels:
-    app: postgres
-spec:
-  type: ClusterIP
-  ports:
-  - name: http
-    port: 5432
-    protocol: TCP
-  selector:
-    app: postgres
