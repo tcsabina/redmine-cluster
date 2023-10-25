@@ -1,10 +1,11 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: myprojects
   labels:
     app: redmine
 spec:
+  serviceName: redmine-cluster
   replicas: 1
   selector:
     matchLabels:
@@ -19,3 +20,14 @@ spec:
         image: redmine:5.0.6-alpine
         ports:
         - containerPort: 3000
+        volumeMounts:
+        - name: redmine-files
+          mountPath: /usr/src/redmine/files
+  volumeClaimTemplates:
+    - metadata:
+        name: redmine-files
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests: 
+            storage: 10Mi
