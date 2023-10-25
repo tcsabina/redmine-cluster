@@ -1,9 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: myprojects
-  labels:
-    app: redmine
+  name: redmine
 spec:
   serviceName: redmine-cluster
   replicas: 1
@@ -16,7 +14,7 @@ spec:
         app: redmine
     spec:
       containers:
-      - name: myprojects
+      - name: redmine
         image: redmine:5.0.6-alpine
         ports:
         - containerPort: 3000
@@ -31,3 +29,19 @@ spec:
         resources:
           requests: 
             storage: 10Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redmine-service
+  labels:
+    app: redmine
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 3000
+    nodePort: 30000
+    protocol: TCP
+  selector:
+    app: redmine
