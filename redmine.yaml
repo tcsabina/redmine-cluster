@@ -82,3 +82,18 @@ spec:
         resources:
           requests: 
             storage: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  labels:
+    app: postgres
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 5432
+    protocol: TCP
+  selector:
+    app: postgres
