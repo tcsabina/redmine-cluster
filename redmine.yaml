@@ -38,19 +38,3 @@ spec:
         resources:
           requests: 
             storage: 10Mi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: redmine-service
-  labels:
-    app: redmine
-spec:
-  type: NodePort
-  ports:
-  - name: http
-    port: 3000
-    nodePort: 30000
-    protocol: TCP
-  selector:
-    app: redmine
