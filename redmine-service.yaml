@@ -2,8 +2,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: redmine-service
-  labels:
-    app: redmine
 spec:
   type: NodePort
   ports:
