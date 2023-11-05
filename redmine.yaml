@@ -30,11 +30,7 @@ spec:
         volumeMounts:
         - name: redmine-files
           mountPath: /usr/src/redmine/files
-  volumeClaimTemplates:
-    - metadata:
-        name: redmine-files
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        resources:
-          requests: 
-            storage: 10Mi
+      volumes:
+        - name: redmine-files
+          persistentVolumeClaim:
+            claimName: redmine-files
