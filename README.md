@@ -55,11 +55,27 @@ Check if the service is created and healthy:
 
 
 ##
-Create last the redmine statefulset:
+Create the redmine statefulset:
 `minikube kubectl -- apply -f redmine.yaml`
 
 Check both the statefulset, and the pods:
 `minikube kubectl -- get sts`
+`minikube kubectl -- get pod`
+
+##
+Create the dashboard-service:
+`minikube kubectl -- apply -f dashboard-service.yaml`
+
+Check if the service is created and healthy:
+`minikube kubectl -- get svc`
+
+
+##
+Create the dashboard deployment:
+`minikube kubectl -- apply -f dashboard.yaml`
+
+Check both the statefulset, and the pods:
+`minikube kubectl -- get deploy`
 `minikube kubectl -- get pod`
 
 
@@ -69,7 +85,10 @@ If all the above operations succeeded, and every service, statefulset, volume cl
 The access the loadbalancer, you need to expose it to the host system that runs minikube:
 `minikube tunnel`
 
-After this start a browser on the host system, and navigate to http:\\\\localhost
+After this start a browser on the host system:
+navigate to http:\\\\localhost, should open the redmine GUI
+navigate to http:\\\\localhost:81, should open the dashboard, which shows all Issues of the redmine system
+
 
 ##
 To remove something:
